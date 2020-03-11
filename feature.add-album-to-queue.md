@@ -6,13 +6,13 @@
 Allow the user to add the entire album to the audio player queue
 
 ## Why are we making this change?
-So that it is easier for the user, instead of them going to each track to add to queue, one button would add the entire track
+Playing an entire album is a common feature users expect and a feature Nawhas.com is currently lacking.
 
 ## Requirements
 - User should be able to an entire album to the playlist
-- The order of which the tracks are being displayed is the order of which the tracks should be added to the queue
-- User should be able to add all tracks from the `Reciter Profile` page against each table to the queue
-- User should be able to add all the tracks from the `Tracks Show` page to the queue
+- The order in which the tracks are being displayed is the order of which the tracks should be added to the queue
+- On the Reciter page: user should be able to play all tracks from the album
+- On the Track page: the "More From This Album" card should allow users to play all tracks from the album
 - When adding all tracks from an album to the queue, if the queue is shuffled then add the new tracks to the shuffled queue in random order
 
 ## Detailed Eng Design
@@ -32,11 +32,11 @@ No changes made to API
 
 #### Vuex
 ##### Player Store
-  -Adding a new mutation named `ADD_ALBUM_TO_QUEUE`
+  - Adding a new mutation named `ADD_ALBUM_TO_QUEUE`
   - This new mutation will accept an array of tracks
   - Will loop through each track and add the track to the queue
   - If the queue is currently shuffled
-    - Pass the list of racks received to the `shuffle` function to generate a random order
+    - Pass the list of tracks received to the `shuffle` function to generate a random order
     - Then push the shuffled array to the `shuffled` queue
 
 ### Migration Path
@@ -44,5 +44,5 @@ No changes to migration
 
 ### Deployment Strategy
 
-##Mockups
+## Mockups
 <!-- If there are any ->
