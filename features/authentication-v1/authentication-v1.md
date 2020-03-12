@@ -1,5 +1,5 @@
 # Authentication v1
-**Authors:** [@szainmehdi](https://github.com/szainmehdi). 
+**Authors:** [@szainmehdi](https://github.com/szainmehdi)  
 **Type:** Feature
 
 ## Overview
