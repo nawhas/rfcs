@@ -1,5 +1,5 @@
 # Audio Player: Add Album to Queue
-**Authors:** [@szainmehdi](https://github.com/szainmehdi) [@shea786](https://github.com/shea786)  
+**Authors:** [@shea786](https://github.com/shea786)  
 **Type:** Feature
 
 ## Overview
