@@ -45,4 +45,4 @@ No changes to migration
 ### Deployment Strategy
 
 ## Mockups
-<!-- If there are any ->
+![](album_play_button.png)
