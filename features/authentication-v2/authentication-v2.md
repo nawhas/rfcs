@@ -3,7 +3,7 @@
 **Type:** Feature
 
 ## Overview
-This phase of authentication we will be adding the ability for Contributors to register on nawhas.com via email and password.
+This phase of authentication we will be adding the ability for Contributors to sign up on nawhas.com via email and password.
 
 ### Definitions
 
@@ -15,17 +15,17 @@ This phase of authentication we will be adding the ability for Contributors to r
 
 ## Why are we making this change?
 To allow the Public to edit nawhas.com we had added the foundation of authentication as well as login functionaltiy through [Authentication v1](https://github.com/nawhas/rfcs/blob/master/features/authentication-v1/authentication-v1.md)
-We want to allow the users to register on nawhas.com and this change will allow for users to register with username/password.
+We want to allow the users to sign up on nawhas.com and this change will allow for users to register with username/password.
 
 ## Requirements
-- Public user should be able to register for a Contributor account.
-- While registering, user can provide the following information
+- Public user should be able to sign up for a Contributor account.
+- While signing up, user can provide the following information
   - Name *
   - Email *
   - Password *
-  - Repeat Password *
+  - Confirm Password *
   - Nickname
-  - If `Password` and `Repeat Password` are not the same then user should not be able to register until issue is resolved as well as be prompted about the passwords not matching.
+  - If `Password` and `Confirm Password` are not the same then user should not be able to register until issue is resolved as well as be prompted about the passwords not matching.
   - If `Nickname` is provided then we must check to see if the nickname is unique. If nickname is not unique then we should ask the user to pick another nickname.
 - Once there are no validation errors, user should be able to submit the registration form.
 - Once the user has been created we should trigger a notification to the end user informing them that their account has been created.
@@ -71,14 +71,14 @@ We will be adding the following functions to `App\Http\Controllers\Api\AuthContr
 #### Vuex Store
 
 ##### Actions
-- `register` - Post to the register API endpoint and commit `LOGIN`
+- `signUp` - Post to the register API endpoint and commit `LOGIN`
 
 
 #### SignUpForm Component
 A `signUpForm` component will handle the processes of:
 - gathering user input for name, email, password, confirm password
 - dispatching `checkNickname` request inline to see if the nickname is taken or not
-- dispatching the `auth/register` action
+- dispatching the `auth/signUp` action
 - handling validation errors
 
 ### Deployment Strategy
