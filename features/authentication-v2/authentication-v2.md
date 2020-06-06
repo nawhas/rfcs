@@ -26,9 +26,12 @@ We want to allow the users to sign up on nawhas.com and this change will allow f
   - Confirm Password *
   - Nickname
   - If `Password` and `Confirm Password` are not the same then user should not be able to register until issue is resolved as well as be prompted about the passwords not matching.
-  - If `Nickname` is provided then we must check to see if the nickname is unique. If nickname is not unique then we should ask the user to pick another nickname.
+  - If `Email` is not in the correct format then user cannot submit the form until that is resolved
 - Once there are no validation errors, user should be able to submit the registration form.
-- Once the user has been created we should trigger a notification to the end user informing them that their account has been created.
+- After submitting the form
+  - If `Email` is already taken then error will be thrown back to the suer
+  - If `Nickname` is given and it is already taken then error will be thrown back to the user
+- Once all backend validation is complete and user is created we should trigger a notification to the end user informing them that their account has been created.
 - By default, the user role will be contributor
 
 ## Detailed Engineering Design
@@ -36,7 +39,7 @@ We want to allow the users to sign up on nawhas.com and this change will allow f
 ### API
 
 #### New Endpoints
-We'll add the following two endpoints
+We'll add the following endpoints
 
 ```
 POST /v1/auth/register
@@ -52,19 +55,12 @@ RESPONSES
 ERRORS
   - 422: Invalid request
          { message: "...", "errors": { email: "...", ... } }
-
-GET /v1/auth/nickname
-RESPONSES
-  - 200: Nickname availability
-         { available: true/false }
 ```
 
 We will be adding the following functions to `App\Http\Controllers\Api\AuthController`
 - register
-- nicknameCheck
 
 `register` function will handle the creation of the user.
-`nicknameCheck` function will be used to determine if the nickname given is already taken or not
 
 ### Frontend
 
@@ -77,7 +73,6 @@ We will be adding the following functions to `App\Http\Controllers\Api\AuthContr
 #### SignUpForm Component
 A `signUpForm` component will handle the processes of:
 - gathering user input for name, email, password, confirm password
-- dispatching `checkNickname` request inline to see if the nickname is taken or not
 - dispatching the `auth/signUp` action
 - handling validation errors
 
