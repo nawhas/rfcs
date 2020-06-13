@@ -77,7 +77,10 @@ A `signUpForm` component will handle the processes of:
 - handling validation errors
 
 ### Deployment Strategy
-This code will not be affecting any existing users and therefore should be safe to roll out to 100% of users
+This feature needs to be coupled with a few other changes before we can deploy to production
+These changes will not be a part of this feature request.
+- [] Make sure that contributor cannot edit/update parts of the system until audit/moderator changes etc are implemented
+- [] Add a feature flag based system so we can turn features on or off. If this is implemented then we do not need to worry about the first point
 
 ## Mockups
 <!-- Attach relevant mockups here. Links to Figma are also appropriate. -->
