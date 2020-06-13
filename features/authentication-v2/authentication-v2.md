@@ -79,7 +79,7 @@ A `signUpForm` component will handle the processes of:
 ### Deployment Strategy
 This feature needs to be coupled with a few other changes before we can deploy to production
 These changes will not be a part of this feature request.
-- Make sure that contributor cannot edit/update parts of the system until audit/moderator changes etc are implemented
+- Make sure that contributor cannot create/edit parts of the system until audit/moderator changes etc are implemented
 - Add a feature flag based system so we can turn features on or off. If this is implemented then we do not need to worry about the first point
 
 ## Mockups
