@@ -87,7 +87,10 @@ class RecitersProjector
 ```
 
 ##### Revisions
-In addition, we'll track revisions when any relevant event occurs.
+Events are great for an audit trail of the application as a whole, but in order to support the concept of revision history, we need to separate the concept of `event` and `revision`. Therefore, in addition to events, we'll track revisions when any relevant event occurs.
+
+An event is something that happened in the application. `UserLoggedIn` can be an event. `ReciterViewed` is an event. Additionally, `ReciterNameChanged` is an event.
+Using those events, we can build an easy table for revision history, which we can then use to power the Revision History API and Frontend and allow reverting to old versions.
 
 A revision essentially contains a JSON-serialized version of the entity, with a version number.
 
