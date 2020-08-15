@@ -43,11 +43,6 @@ To enable more interactivity on the site, and entice users to sign up for an acc
 - A user must be authenticated to save tracks.
 - A user is prompted to sign up if attempting to save track.
 
-## Open Questions
-1. Does it make sense to separate the concept of "saved" tracks/albums from a future concept of Playlists?
-  - The term "Playlist" is standard across music apps, but does that make sense in the context of Nawhas?
-  - Spotify has separate concepts for "saved" vs. "playlist" – a user can save tracks and albums in Spotify and those show up in the user's library as a (potentially) sortable list.
-
 ## Detailed Engineering Design
 
 In the backend, we'll create a new `Accounts` module for all changes described below.
@@ -90,6 +85,19 @@ GET /me/tracks
 ```
 
 By default, this endpoint will sort by most recently saved tracks.
+
+### Database
+We'll process the events above and write records to the following table.
+
+```
+table: saves
+========================
+user_id: uuid (index)
+saveable_type: [Track|Album|Reciter] (index)
+saveable_id: uuid (index)
+created_at: timestamp
+updated_at: timestamp
+```
 
 #### Save Track
 ```
