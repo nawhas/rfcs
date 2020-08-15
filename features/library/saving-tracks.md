@@ -1,0 +1,141 @@
+# User Library v1: Saving Tracks
+**Authors:** [@szainmehdi](https://github.com/szainmehdi)  
+**Type:** Feature
+
+## Overview
+Build a system that allows users to save Tracks to their library on Nawhas.com.
+
+### Definitions
+<!-- 
+Define terms used in this document, if not obvious. 
+Remove this section if unnecessary. 
+-->
+
+| Term            | Definition                                       |
+| --------------- | ------------------------------------------------ |
+| Track           | A nawha, stored in the tracks table              |
+| Playlist        | A collection of nawhas with a user-defined name. |
+| User            | A logged in person on Nawhas.com                 |
+
+## Why are we making this change?
+<!-- Explain the motivation for this change -->
+<!-- 
+Example: 
+To achieve the greater effort of allowing public edit access on Nawhas.com, enabling moderators to log in is a prerequisite. This change will also lay the foundation for the overall authentication system and enable Contributor registration and logins in the future.
+-->
+
+Currently, Nawhas.com is not very interactive. Users have no way to "favorite" nawhas, create playlists, and listen to playlists.
+
+To enable more interactivity on the site, and entice users to sign up for an account, we're building a feature that, to start, will start to allow users to "favorite" nawhas and save them to their library.
+ 
+## Requirements
+<!-- Provide a list of acceptance criteria. Example:
+- Engineers can provision a Moderator account.
+- Moderators can log in to Nawhas.com with an email address and password.
+- Moderators can log out of Nawhas.com to end their session.
+- The frontend application can determine if a User is logged in.
+- The frontend application can determine if a User is a Moderator.
+-->
+- A user can sign up for an account on Nawhas.com
+- A user can save a track anywhere in the application.
+- A user can view saved tracks.
+- A user can play all saved tracks.
+- A user must be authenticated to save tracks.
+- A user is prompted to sign up if attempting to save track.
+
+## Open Questions
+1. Does it make sense to separate the concept of "saved" tracks/albums from a future concept of Playlists?
+  - The term "Playlist" is standard across music apps, but does that make sense in the context of Nawhas?
+  - Spotify has separate concepts for "saved" vs. "playlist" – a user can save tracks and albums in Spotify and those show up in the user's library as a (potentially) sortable list.
+
+## Detailed Engineering Design
+
+In the backend, we'll create a new `Accounts` module for all changes described below.
+
+### Events
+<!-- Describe any changes necessary to the API to make this feature possible. -->
+Keeping event sourcing in mind, we only have the following events to consider for favoriting nawhas.
+
+```
+TrackSaved
+  - userId: UUID
+  - trackId: UUID
+
+SavedTrackRemoved
+  - userId: UUID
+  - trackId: UUID
+```
+
+How we store these saved tracks in a database can change in the future. What's most important is that we capture the right events, with clarity on the intent of the event.
+
+### API
+A few new API endpoints will need to be added to allow managing saved tracks.
+
+#### Get Saved Tracks
+```
+GET /me/tracks
+  Query Params: 
+  - sort_by: string
+  - sort_dir: "asc"|"desc"
+  - per_page: int
+  - page: int
+  - include: Array<TrackIncludes>
+-> 200 OK 
+{
+  data: Array<Track>
+  meta: {
+   pagination: PaginationMetadata
+  }
+}
+```
+
+By default, this endpoint will sort by most recently saved tracks.
+
+#### Save Track
+```
+PUT /me/tracks
+{
+  ids: Array<UUID>
+}
+-> 204 No Content
+```
+
+#### Remove Saved Track
+```
+DELETE /me/tracks
+{
+  ids: Array<UUID>
+}
+-> 204 No Content
+```
+
+### Frontend
+- We'll need to build a new `Api` class: `nuxt/api/library.ts` that handles calling the endpoints described above.
+- A new page `nuxt/pages/library/LandingPage.vue`  will be created and mapped to the `/library` route.
+- A new page `nuxt/pages/library/HomePage.vue` will be created and mapped to the `/library/home` route.
+  - A new middleware that checks to see if the user is authenticated will need to be used to guard this page.
+    - If the user is not authenticated, we'll redirect them to the `LibraryLandingPage`
+  - This page will display a user's saved tracks, limited to 6 tracks.
+  - The "View All" button will take the user to `/library/tracks`.
+- A new page `nuxt/pages/library/TracksPage.vue` will be created and mapped to the `/library/tracks` page.
+  - This page will show a list of tracks in a sortable, paginated table. Sorting and pagination will be handled server-side.
+- All components that show a track will need to be updated to support saving the track.
+  - This action will need to prompt a user to log in if unauthenticated, and then, once authenticated, complete the requested action.
+
+### Deployment Strategy
+<!-- Describe rollout strategy. -->
+TODO
+
+## Future Scope
+
+#### Saving Albums
+We'll want to enable users to save albums in a fast-follow.
+
+#### Playlists
+We'll eventually want to enable users to create and manage playlists. We can use the data from these events to automatically add saved tracks to an autogenerated playlist called "Favorites".
+
+## Mockups
+<!-- Attach relevant mockups here. Links to Figma are also appropriate. -->
+[View Prototype on Figma](https://www.figma.com/proto/FRmxecWKfbfSk19wMLepZS/Nawhas.com-Design?node-id=22215%3A34351&viewport=489%2C115%2C0.34071797132492065&scaling=min-zoom)
+<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fproto%2FFRmxecWKfbfSk19wMLepZS%2FNawhas.com-Design%3Fnode-id%3D22215%253A34351%26viewport%3D489%252C115%252C0.34071797132492065%26scaling%3Dmin-zoom&chrome=DOCUMENTATION" allowfullscreen></iframe>
+
