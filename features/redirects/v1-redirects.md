@@ -74,8 +74,8 @@ POST /v1/redirect
 POST /v1/redirect
 {
   "parameters": {
-    "reciter": "mir-hasan-meer",
-    "album": "2019-20"
+    "reciter": "the-tejani-brothers",
+    "album": "2018"
   }
 }
 
