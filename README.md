@@ -9,3 +9,4 @@ Approved RFCs live here. Create a pull request to discuss new RFCs.
 - [Authentication v2](./features/authentication-v2/authentication-v2.md)
 - [Audio Player Shuffle](./features/audio-shuffle/audio-shuffle.md)
 - [User Library: Saving Tracks](./features/library/v1-saved-tracks.md)
+- [Redirects & 404 Handling](./features/redirects/v1-redirects.md)
